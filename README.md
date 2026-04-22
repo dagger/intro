@@ -1,8 +1,8 @@
-# Intro Toolchain
+# Setup Module
 
 This [toolchain](https://docs.dagger.io/core-concepts/toolchains) helps you get started with Dagger in your project.
 
-It provides [checks](https://docs.dagger.io/core-concepts/checks) to walk you through onboarding Dagger in your project.
+It provides [checks](https://docs.dagger.io/core-concepts/checks) to walk you through adopting Dagger in your project.
 
 ## Get started
 
@@ -14,7 +14,7 @@ It provides [checks](https://docs.dagger.io/core-concepts/checks) to walk you th
 # From the root of your projects repository
 dagger init
 
-dagger toolchain install github.com/dagger/intro
+dagger toolchain install github.com/dagger/setup
 ```
 
 3. List the [checks](https://docs.dagger.io/core-concepts/checks) this toolchain provides:
@@ -23,7 +23,7 @@ dagger toolchain install github.com/dagger/intro
 dagger check -l
 
 Name                      Description
-install-intro             Install your first Toolchain
+install-setup             Install your first Toolchain
 login-to-cloud            Login to Dagger Cloud with dagger login
 install-more-toolchains   Install your next toolchain
 ```

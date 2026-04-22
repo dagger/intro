@@ -1,0 +1,90 @@
+"""
+A Setup module for Dagger.
+
+Provides checks to walk you through adopting Dagger in your project.
+"""
+type Setup {
+  let source: Directory!
+
+  new(workspace: Workspace!) {
+    self.source = workspace.directory("/")
+    self
+  }
+
+  """
+  Install your first Toolchain
+  """
+  pub installSetup: Void @check {
+    null
+  }
+
+  """
+  Login to Dagger Cloud with dagger login
+  """
+  pub loginToCloud: Void @check {
+    let url = try { cloud.traceURL } catch {
+      err => ""
+    }
+    if (url == "") {
+      raise "Run 'dagger login' to login to Dagger Cloud"
+    }
+    null
+  }
+
+  """
+  Install your next toolchain
+  """
+  pub installMoreToolchains: Void @check {
+    let knownToolchains = [
+      {{
+        indicator: ".prettierrc",
+        name: "prettier",
+        repo: "github.com/dagger/prettier"
+      }},
+      {{
+        indicator: "playwright.config.js",
+        name: "playwright",
+        repo: "github.com/dagger/playwright"
+      }},
+      {{
+        indicator: "jest.config.js",
+        name: "jest",
+        repo: "github.com/dagger/jest"
+      }},
+      {{
+        indicator: ".eslintrc.js",
+        name: "eslint",
+        repo: "github.com/dagger/eslint"
+      }},
+      {{
+        indicator: "go.mod",
+        name: "go",
+        repo: "github.com/dagger/dagger/toolchains/go"
+      }},
+    ]
+
+    let daggerJson = source.file("dagger.json").contents
+
+    let message = ""
+    let hasToolchain = false
+
+    knownToolchains.each { tc =>
+      let needsTc = source.exists(tc.indicator)
+      let hasTc = daggerJson.contains("\"name\": \"" + tc.name + "\"")
+      if (needsTc and !hasTc) {
+        message = message + "Install " + tc.name + ": dagger toolchain install " + tc.repo + "\n"
+      }
+      if (hasTc) {
+        hasToolchain = true
+      }
+    }
+
+    if (message == "" and hasToolchain) {
+      null
+    } else if (message == "") {
+      raise "Find some toolchains for your project.\nAsk in the Dagger discord for some relevant ones.\n"
+    } else {
+      raise message
+    }
+  }
+}

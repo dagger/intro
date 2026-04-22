@@ -1,7 +1,7 @@
 {
-  "name": "intro",
-  "engineVersion": "v0.19.10",
+  "name": "setup",
+  "engineVersion": "v0.20.6",
   "sdk": {
-    "source": "go"
+    "source": "dang"
   }
 }
